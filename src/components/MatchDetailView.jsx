@@ -140,63 +140,65 @@ export default function MatchDetailView({
           </div>
         </div>
 
-        {/* Team 1 Row */}
-        <div className="ladder-row">
-          <div className="ladder-runner-name">{depthOdds.team1.name}</div>
-          <div className="depth-cells-group">
-            {/* 3 Back Cells */}
-            {depthOdds.team1.back.map((b, i) => (
-              <button 
-                key={i} 
-                className="depth-cell back-cell"
-                onClick={() => onSelectOdds(match, depthOdds.team1.name, '1', 'BACK', b.price)}
-              >
-                <span className="d-price">{b.price.toFixed(2)}</span>
-                <span className="d-vol">{b.vol}</span>
-              </button>
-            ))}
+        <div className="ladder-scroll-wrapper">
+          {/* Team 1 Row */}
+          <div className="ladder-row">
+            <div className="ladder-runner-name">{depthOdds.team1.name}</div>
+            <div className="depth-cells-group">
+              {/* 3 Back Cells */}
+              {depthOdds.team1.back.map((b, i) => (
+                <button 
+                  key={i} 
+                  className="depth-cell back-cell"
+                  onClick={() => onSelectOdds(match, depthOdds.team1.name, '1', 'BACK', b.price)}
+                >
+                  <span className="d-price">{b.price.toFixed(2)}</span>
+                  <span className="d-vol">{b.vol}</span>
+                </button>
+              ))}
 
-            {/* 3 Lay Cells */}
-            {depthOdds.team1.lay.map((l, i) => (
-              <button 
-                key={i} 
-                className="depth-cell lay-cell"
-                onClick={() => onSelectOdds(match, depthOdds.team1.name, '1', 'LAY', l.price)}
-              >
-                <span className="d-price">{l.price.toFixed(2)}</span>
-                <span className="d-vol">{l.vol}</span>
-              </button>
-            ))}
+              {/* 3 Lay Cells */}
+              {depthOdds.team1.lay.map((l, i) => (
+                <button 
+                  key={i} 
+                  className="depth-cell lay-cell"
+                  onClick={() => onSelectOdds(match, depthOdds.team1.name, '1', 'LAY', l.price)}
+                >
+                  <span className="d-price">{l.price.toFixed(2)}</span>
+                  <span className="d-vol">{l.vol}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Team 2 Row */}
-        <div className="ladder-row">
-          <div className="ladder-runner-name">{depthOdds.team2.name}</div>
-          <div className="depth-cells-group">
-            {/* 3 Back Cells */}
-            {depthOdds.team2.back.map((b, i) => (
-              <button 
-                key={i} 
-                className="depth-cell back-cell"
-                onClick={() => onSelectOdds(match, depthOdds.team2.name, '2', 'BACK', b.price)}
-              >
-                <span className="d-price">{b.price.toFixed(2)}</span>
-                <span className="d-vol">{b.vol}</span>
-              </button>
-            ))}
+          {/* Team 2 Row */}
+          <div className="ladder-row">
+            <div className="ladder-runner-name">{depthOdds.team2.name}</div>
+            <div className="depth-cells-group">
+              {/* 3 Back Cells */}
+              {depthOdds.team2.back.map((b, i) => (
+                <button 
+                  key={i} 
+                  className="depth-cell back-cell"
+                  onClick={() => onSelectOdds(match, depthOdds.team2.name, '2', 'BACK', b.price)}
+                >
+                  <span className="d-price">{b.price.toFixed(2)}</span>
+                  <span className="d-vol">{b.vol}</span>
+                </button>
+              ))}
 
-            {/* 3 Lay Cells */}
-            {depthOdds.team2.lay.map((l, i) => (
-              <button 
-                key={i} 
-                className="depth-cell lay-cell"
-                onClick={() => onSelectOdds(match, depthOdds.team2.name, '2', 'LAY', l.price)}
-              >
-                <span className="d-price">{l.price.toFixed(2)}</span>
-                <span className="d-vol">{l.vol}</span>
-              </button>
-            ))}
+              {/* 3 Lay Cells */}
+              {depthOdds.team2.lay.map((l, i) => (
+                <button 
+                  key={i} 
+                  className="depth-cell lay-cell"
+                  onClick={() => onSelectOdds(match, depthOdds.team2.name, '2', 'LAY', l.price)}
+                >
+                  <span className="d-price">{l.price.toFixed(2)}</span>
+                  <span className="d-vol">{l.vol}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

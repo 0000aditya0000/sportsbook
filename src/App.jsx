@@ -452,6 +452,7 @@ export default function App() {
             setShowMobileSidebar(false);
           }}
           isOpen={showMobileSidebar}
+          onCloseMobile={() => setShowMobileSidebar(false)}
           onOpenSessionTracker={() => {
             setSelectedMatch(data.cricket[0]);
             window.scrollTo({ top: 0, behavior: 'smooth' });

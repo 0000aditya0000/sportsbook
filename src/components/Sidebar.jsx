@@ -21,6 +21,7 @@ export default function Sidebar({
   activeSport, 
   onSelectSport, 
   isOpen, 
+  onCloseMobile,
   onOpenSessionTracker 
 }) {
   const [drilldownSport, setDrilldownSport] = useState(null); // 'football' | 'cricket' | null
@@ -35,9 +36,30 @@ export default function Sidebar({
   };
 
   return (
-    <aside className={`sidebar-left ${isOpen ? 'mobile-open' : ''}`}>
-      {/* Top Matches & Sports Main Anchors (Screenshot 1 & 2) */}
-      <div className="sidebar-top-anchors">
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="mobile-sidebar-backdrop active" 
+          onClick={onCloseMobile} 
+          aria-label="Close Mobile Menu"
+        />
+      )}
+
+      <aside className={`sidebar-left ${isOpen ? 'mobile-open' : ''}`}>
+        {/* Mobile Header with Close Button */}
+        <div className="sidebar-mobile-header">
+          <div className="smh-brand">
+            <i className="fa-solid fa-layer-group text-gold"></i>
+            <span>SPORTSBOOK MENU</span>
+          </div>
+          <button className="smh-close-btn" onClick={onCloseMobile} aria-label="Close Menu">
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        {/* Top Matches & Sports Main Anchors (Screenshot 1 & 2) */}
+        <div className="sidebar-top-anchors">
         <div 
           className={`anchor-item ${activeSport === 'all' && !drilldownSport ? 'active' : ''}`}
           onClick={() => {
@@ -170,6 +192,7 @@ export default function Sidebar({
           Chat Now
         </a>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

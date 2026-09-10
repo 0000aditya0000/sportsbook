@@ -2008,40 +2008,535 @@ input, select {
 .m-icon { font-size: 16px; position: relative; }
 .m-slip-count { position: absolute; top: -4px; right: -8px; background: #ef4444; color: #fff; font-size: 8px; font-weight: 800; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-/* Responsive Breakpoints */
+/* ==========================================================================
+   MOBILE BACKDROPS & HEADERS
+   ========================================================================== */
+
+.mobile-sidebar-backdrop,
+.mobile-slip-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-sidebar-backdrop.active {
+  z-index: 1599;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-slip-backdrop.active {
+  z-index: 1799;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sidebar Mobile Top Bar */
+.sidebar-mobile-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 10px;
+}
+
+.smh-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.smh-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.smh-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+/* Mobile BetSlip Header & Handle */
+.mobile-slip-header-bar {
+  display: none;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 8px 14px 10px;
+  border-radius: 16px 16px 0 0;
+}
+
+.msh-drag-pill {
+  width: 36px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  align-self: center;
+  margin-bottom: 8px;
+}
+
+.msh-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.msh-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.msh-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.msh-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   COMPREHENSIVE RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* 1. Large Laptops / Tablets Landscape (< 1200px) */
 @media (max-width: 1200px) {
-  :root { --sidebar-width: 68px; --betslip-width: 300px; }
-  .sb-name, .sb-count, .sb-tag, .sidebar-shortcuts, .sidebar-section-divider, .wa-info, .wa-chat-btn, .sidebar-title, .league-item-row span, .arr-right, .drilldown-current-sport span { display: none; }
-  .sidebar-item { justify-content: center; padding: 0; }
-  .casino-cards-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-@media (max-width: 992px) {
-  .sidebar-left {
-    position: fixed; top: var(--header-height); left: 0; bottom: var(--mobile-bottom-height);
-    width: 260px; background: #0b121d; z-index: 1600; transform: translateX(-100%);
-    transition: transform 0.3s; box-shadow: 10px 0 30px rgba(0,0,0,0.5); padding: 12px;
+  :root { 
+    --sidebar-width: 68px; 
+    --betslip-width: 290px; 
   }
-  .sidebar-left.mobile-open { transform: translateX(0); }
-  .sb-name, .sb-count, .sb-tag, .sidebar-shortcuts, .sidebar-section-divider, .wa-info, .wa-chat-btn, .sidebar-title, .league-item-row span, .arr-right, .drilldown-current-sport span { display: block !important; }
-  .sidebar-item { justify-content: flex-start !important; padding: 0 14px !important; }
-  .mobile-menu-btn { display: block; }
-  .sidebar-right { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; z-index: 1800; transform: translateY(100%); transition: transform 0.3s; }
-  .sidebar-right.mobile-open { transform: translateY(0); }
-  .betslip-card { max-height: 80vh; border-radius: 14px 14px 0 0; }
-  .mobile-bottom-bar { display: flex; }
-  .header-user-status, .header-balance-summary { display: none; }
-  .master-layout-container { padding-bottom: 74px; }
-  .casino-cards-grid { grid-template-columns: repeat(3, 1fr); }
+  .sb-name, .sb-count, .sb-tag, .sidebar-shortcuts, .sidebar-section-divider, 
+  .wa-info, .wa-chat-btn, .sidebar-title, .league-item-row span, .arr-right, 
+  .drilldown-current-sport span { 
+    display: none; 
+  }
+  .sidebar-item { 
+    justify-content: center; 
+    padding: 0; 
+  }
+  .casino-cards-grid { 
+    grid-template-columns: repeat(4, 1fr); 
+  }
 }
 
-@media (max-width: 640px) {
-  .header-center { display: none; }
-  .hero-banner-visual { display: none; }
-  .hero-banner-content { max-width: 100%; }
-  .casino-cards-grid { grid-template-columns: repeat(2, 1fr); }
-  .depth-column-labels { display: none; }
-  .depth-cells-group { flex-wrap: wrap; }
+/* 2. Tablets & Mobile (< 992px) */
+@media (max-width: 992px) {
+  .master-header {
+    padding: 0 10px;
+  }
+  .sidebar-left {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    bottom: 0;
+    width: 280px; 
+    max-width: 85vw;
+    background: #090f18; 
+    z-index: 1600; 
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+    box-shadow: 10px 0 30px rgba(0,0,0,0.7); 
+    padding: 12px;
+    overflow-y: auto;
+  }
+  .sidebar-left.mobile-open { 
+    transform: translateX(0); 
+  }
+  .sidebar-mobile-header {
+    display: flex;
+  }
+  .sb-name, .sb-count, .sb-tag, .sidebar-shortcuts, .sidebar-section-divider, 
+  .wa-info, .wa-chat-btn, .sidebar-title, .league-item-row span, .arr-right, 
+  .drilldown-current-sport span { 
+    display: block !important; 
+  }
+  .sidebar-item { 
+    justify-content: flex-start !important; 
+    padding: 0 14px !important; 
+  }
+  .mobile-menu-btn { 
+    display: block; 
+  }
+  
+  /* Mobile Sliding BetSlip */
+  .sidebar-right { 
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    width: 100%; 
+    z-index: 1800; 
+    transform: translateY(100%); 
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+  }
+  .sidebar-right.mobile-open { 
+    transform: translateY(0); 
+  }
+  .betslip-card { 
+    max-height: 85vh; 
+    border-radius: 16px 16px 0 0; 
+    overflow-y: auto;
+    border-bottom: none;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+  }
+  .mobile-slip-header-bar {
+    display: flex;
+  }
+  
+  /* Mobile Bottom App Bar */
+  .mobile-bottom-bar { 
+    display: flex; 
+  }
+  
+  /* Header clean-up */
+  .header-user-status, 
+  .header-balance-summary { 
+    display: none; 
+  }
+  .master-layout-container { 
+    padding-bottom: 74px; 
+  }
+  .casino-cards-grid { 
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+/* 3. Small Tablets & Phones (< 768px) */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 56px;
+    --subnav-height: 40px;
+  }
+
+  .master-layout-container {
+    padding: 8px 6px 74px 6px;
+    gap: 8px;
+  }
+
+  /* Header Optimization */
+  .master-header {
+    height: 56px;
+    padding: 0 8px;
+  }
+  .logo-text {
+    gap: 2px;
+  }
+  .logo-rollix,
+  .logo-max {
+    font-size: 17px;
+  }
+  .logo-book,
+  .logo-lotus {
+    font-size: 17px;
+  }
+  .logo-tag {
+    font-size: 7.5px;
+    padding: 1px 4px;
+  }
+  .header-quick-funds {
+    gap: 4px;
+  }
+  .btn-head-fund {
+    padding: 5px 9px;
+    font-size: 10.5px;
+  }
+  .header-icon-pill {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  .btn-head-account {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  /* Category Nav Horizontal Scroll */
+  .category-nav-bar {
+    height: 40px;
+  }
+  .category-nav-scroll {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .cat-pill {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 10.5px;
+  }
+
+  /* InPlay Odds Grid Responsive Columns */
+  .event-row {
+    padding: 8px 6px;
+  }
+  .event-info-col {
+    gap: 6px;
+    padding-right: 4px;
+  }
+  .event-time-box {
+    min-width: 48px;
+  }
+  .time-day {
+    font-size: 8.5px;
+  }
+  .time-val {
+    font-size: 10px;
+  }
+  .team-row {
+    font-size: 12px;
+  }
+  .event-market-badges {
+    gap: 2px;
+  }
+  .badge-pill {
+    font-size: 7.5px;
+    padding: 1px 3px;
+  }
+
+  /* Scaled Odds Pairs: 66px width = 198px total for 3 columns */
+  .col-head.col-odds-group {
+    width: 66px !important;
+  }
+  .odds-pair {
+    width: 66px !important;
+    gap: 2px;
+  }
+  .odds-cell {
+    height: 38px;
+    padding: 1px;
+  }
+  .odds-val {
+    font-size: 11px;
+  }
+  .odds-vol {
+    font-size: 8px;
+  }
+  .odds-table-header {
+    padding: 6px 6px;
+  }
+
+  /* Depth Ladder in Match View: Horizontal Touch Scroll Container */
+  .ladder-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    scrollbar-width: thin;
+  }
+  .ladder-row {
+    min-width: 490px;
+  }
+  .depth-cell {
+    width: 40px;
+    height: 36px;
+  }
+  .d-price {
+    font-size: 11px;
+  }
+  .d-vol {
+    font-size: 8px;
+  }
+
+  /* Sessions Table */
+  .session-item-row {
+    padding: 8px 6px;
+  }
+  .session-cell {
+    width: 50px;
+    height: 38px;
+  }
+  .s-runs {
+    font-size: 11.5px;
+  }
+  .session-limits-cell {
+    width: 60px;
+    font-size: 8.5px;
+  }
+
+  /* Keypad on Mobile Slip */
+  .keypad-betslip-container {
+    padding: 10px;
+    gap: 8px;
+  }
+  .keypad-stake-btn {
+    padding: 10px 2px;
+    font-size: 11px;
+  }
+  .kar-btn {
+    padding: 8px 2px;
+    font-size: 11px;
+  }
+  .keypad-submit-row {
+    gap: 6px;
+  }
+  .btn-cancel-bet,
+  .btn-confirm-place {
+    padding: 11px 6px;
+  }
+
+  /* Cricket Tracker Mobile */
+  .tracker-score-body {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+  .vs-badge {
+    align-self: center;
+  }
+  .over-strip-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  /* Floating Theme Switcher above Mobile Bottom Nav */
+  .theme-floating-bar {
+    bottom: 68px;
+    right: 10px;
+    padding: 2px 3px;
+  }
+  .tf-label {
+    display: none;
+  }
+}
+
+/* 4. Compact Phones (< 540px) */
+@media (max-width: 540px) {
+  .header-center { 
+    display: none; 
+  }
+  .hero-banner-card {
+    padding: 12px 14px;
+  }
+  .hero-title {
+    font-size: 16px;
+  }
+  .hero-subtitle {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  .hero-banner-visual { 
+    display: none; 
+  }
+  .hero-banner-content { 
+    max-width: 100%; 
+  }
+  
+  /* Odds Grid: 54px width per pair = 162px total */
+  .col-head.col-odds-group {
+    width: 54px !important;
+  }
+  .odds-pair {
+    width: 54px !important;
+  }
+  .odds-cell {
+    height: 35px;
+  }
+  .odds-val {
+    font-size: 10px;
+  }
+  .odds-vol {
+    font-size: 7.5px;
+  }
+  .pair-title {
+    font-size: 8px;
+  }
+  .pair-labels {
+    font-size: 7.5px;
+  }
+
+  /* Casino Cards Grid */
+  .casino-cards-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px;
+  }
+  .casino-rich-card {
+    height: 105px;
+    padding: 8px;
+  }
+  .crc-title {
+    font-size: 10px;
+  }
+
+  /* Trust Strip */
+  .trust-footer-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  /* Modals sizing */
+  .modal-box,
+  .theme-modal-box {
+    max-width: 94vw;
+    border-radius: 8px;
+  }
+}
+
+/* 5. Extra Small Phones (< 380px) */
+@media (max-width: 380px) {
+  .logo-tag {
+    display: none;
+  }
+  .btn-head-fund span,
+  .btn-head-fund {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+  .time-day {
+    display: none;
+  }
+  .event-time-box {
+    min-width: 38px;
+  }
+  .col-head.col-odds-group {
+    width: 48px !important;
+  }
+  .odds-pair {
+    width: 48px !important;
+  }
+  .odds-cell {
+    height: 32px;
+  }
+  .odds-val {
+    font-size: 9.5px;
+  }
+  .odds-vol {
+    display: none;
+  }
 }
 
 /* ==========================================================================

@@ -43,9 +43,32 @@ export default function BetSlip({
   ];
 
   return (
-    <aside className={`sidebar-right ${isOpenMobile ? 'mobile-open' : ''}`}>
-      <div className="betslip-card">
-        {/* Accordion 1: Live Stream (Screenshot 2, 3, 4) */}
+    <>
+      {/* Mobile Backdrop */}
+      {isOpenMobile && (
+        <div 
+          className="mobile-slip-backdrop active" 
+          onClick={onCloseMobile} 
+          aria-label="Close Mobile Bet Slip"
+        />
+      )}
+
+      <aside className={`sidebar-right ${isOpenMobile ? 'mobile-open' : ''}`}>
+        <div className="betslip-card">
+          {/* Mobile Header & Handle Bar */}
+          <div className="mobile-slip-header-bar">
+            <div className="msh-drag-pill"></div>
+            <div className="msh-row">
+              <span className="msh-title">
+                <i className="fa-solid fa-receipt text-gold"></i> Bet Slip ({selections.length})
+              </span>
+              <button className="msh-close-btn" onClick={onCloseMobile} aria-label="Close Slip">
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          {/* Accordion 1: Live Stream (Screenshot 2, 3, 4) */}
         <div className="betslip-accordion-box">
           <div 
             className="bs-acc-header"
@@ -218,7 +241,8 @@ export default function BetSlip({
             )}
           </div>
         )}
-      </div>
-    </aside>
+        </div>
+      </aside>
+    </>
   );
 }
