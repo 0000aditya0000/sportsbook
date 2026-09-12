@@ -1770,16 +1770,21 @@ input, select {
   background: #ffffff;
   color: #0f172a;
   border-left: 1px solid var(--border-subtle);
-  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  box-shadow: none;
   z-index: 2001;
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .account-drawer-panel.active {
   transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  box-shadow: none;
 }
 
 .drawer-header {
@@ -2123,9 +2128,9 @@ input, select {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -2269,16 +2274,21 @@ input, select {
     bottom: 0;
     width: 280px; 
     max-width: 85vw;
-    background: #090f18; 
+    background: #ffffff; 
     z-index: 1600; 
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-    box-shadow: 10px 0 30px rgba(0,0,0,0.7); 
+    box-shadow: none;
     padding: 12px;
     overflow-y: auto;
+    visibility: hidden;
+    pointer-events: none;
   }
   .sidebar-left.mobile-open { 
-    transform: translateX(0); 
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    box-shadow: none;
   }
   .sidebar-mobile-header {
     display: flex;
@@ -4953,15 +4963,23 @@ body.theme-light .provider-tile {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   }
 
-  /* Kill any leftover dark footer glow from closed slip / fabs */
+  /* Kill leftover dark side/footer glow from closed drawers */
+  .sidebar-left:not(.mobile-open),
   .sidebar-right:not(.mobile-open) {
     box-shadow: none !important;
     visibility: hidden;
     pointer-events: none;
   }
+  .sidebar-left.mobile-open,
   .sidebar-right.mobile-open {
     visibility: visible;
     pointer-events: auto;
+    box-shadow: none !important;
+  }
+
+  .fab-whatsapp,
+  .fab-minigames {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 }
 
