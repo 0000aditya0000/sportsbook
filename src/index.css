@@ -143,6 +143,7 @@ body.theme-light .master-header {
   background: #1a1a1a;
   border-bottom: 1px solid #111;
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  overflow: visible;
 }
 
 body.theme-light .logo-rollix,
@@ -282,6 +283,7 @@ body.theme-light .event-row {
 body.theme-light .mobile-bottom-bar {
   background: #ffffff;
   border-top: 1px solid #e5e7eb;
+  box-shadow: none;
 }
 
 body.theme-light .betslip-card,
@@ -2313,15 +2315,23 @@ input, select {
     border-radius: 16px 16px 0 0; 
     overflow-y: auto;
     border-bottom: none;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: none;
+  }
+  .sidebar-right.mobile-open .betslip-card {
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
   }
   .mobile-slip-header-bar {
     display: flex;
   }
   
-  /* Mobile Bottom App Bar */
+  /* Mobile Bottom App Bar — no upward dark shade */
   .mobile-bottom-bar { 
-    display: flex; 
+    display: flex;
+    box-shadow: none;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    height: calc(var(--mobile-bottom-height) + env(safe-area-inset-bottom, 0px));
   }
   
   /* Header clean-up */
@@ -2352,18 +2362,22 @@ input, select {
   /* Header Optimization */
   .master-header {
     height: 56px;
-    padding: 0 8px;
+    padding: 0 8px 0 6px;
+    overflow: visible;
+  }
+  .header-right {
+    overflow: visible;
   }
   .logo-text {
     gap: 2px;
   }
   .logo-rollix,
   .logo-max {
-    font-size: 17px;
+    font-size: 15px;
   }
   .logo-book,
   .logo-lotus {
-    font-size: 17px;
+    font-size: 15px;
   }
   .logo-tag {
     font-size: 7.5px;
@@ -4083,26 +4097,42 @@ body.theme-light .acc-nav-btn.active {
 .header-balance-pill {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #2a2a2a;
   border-radius: 999px;
-  padding: 4px 8px 4px 12px;
+  padding: 4px 4px 4px 10px;
   cursor: pointer;
   color: #fff;
   font-weight: 700;
   font-size: 12px;
   font-family: var(--font-numbers);
+  flex-shrink: 0;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.hbp-balance {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 96px;
+  line-height: 1.2;
 }
 
 .hbp-avatar {
   width: 26px;
   height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  flex-shrink: 0;
   border-radius: 50%;
-  background: #444;
-  display: flex;
+  background: #555;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
+  color: #fff;
+  overflow: visible;
 }
 
 .desktop-only-flex {
@@ -4811,23 +4841,63 @@ body.theme-light .provider-tile {
   }
 
   .master-header {
-    padding: 0 10px;
-    gap: 8px;
+    padding: 0 8px 0 6px;
+    gap: 6px;
+    overflow: visible;
+  }
+
+  .header-left {
+    min-width: 0;
+    flex-shrink: 1;
   }
 
   .header-right {
-    gap: 8px;
+    gap: 6px;
     margin-left: auto;
+    flex-shrink: 0;
+    max-width: 68%;
+    overflow: visible;
+  }
+
+  .header-right .notification-pill {
+    flex-shrink: 0;
   }
 
   .btn-head-deposit-classic {
-    padding: 5px 12px;
+    padding: 5px 10px;
     font-size: 11px;
+    flex-shrink: 0;
   }
 
   .header-balance-pill {
-    padding: 3px 6px 3px 10px;
-    font-size: 11px;
+    padding: 3px 3px 3px 8px;
+    font-size: 10.5px;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .hbp-balance {
+    max-width: 78px;
+  }
+
+  .hbp-avatar {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    font-size: 10px;
+  }
+
+  .logo-rollix,
+  .logo-book,
+  .logo-max,
+  .logo-lotus {
+    font-size: 15px;
+  }
+
+  .logo-lotus-mark svg {
+    width: 14px;
+    height: 14px;
   }
 
   .master-layout-container {
@@ -4880,6 +4950,18 @@ body.theme-light .provider-tile {
   .theme-floating-bar {
     bottom: calc(var(--mobile-bottom-height) + 80px);
     right: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+
+  /* Kill any leftover dark footer glow from closed slip / fabs */
+  .sidebar-right:not(.mobile-open) {
+    box-shadow: none !important;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .sidebar-right.mobile-open {
+    visibility: visible;
+    pointer-events: auto;
   }
 }
 

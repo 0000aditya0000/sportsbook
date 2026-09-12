@@ -77,8 +77,8 @@ export default function Header({
         </button>
 
         <div className="header-balance-pill" onClick={onOpenAccount} title="Account">
-          <span className="hbp-balance">₹ {mainBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-          <span className="hbp-avatar"><i className="fa-solid fa-user"></i></span>
+          <span className="hbp-balance">₹ {(mainBalance || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
+          <span className="hbp-avatar" aria-hidden="true"><i className="fa-solid fa-user"></i></span>
         </div>
 
         <div className="header-desktop-extras desktop-only-flex">
