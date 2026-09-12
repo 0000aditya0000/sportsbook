@@ -1,20 +1,15 @@
 import React from 'react';
 
 const CATEGORIES = [
-  { id: 'all', label: 'HOME', icon: 'fa-house' },
-  { id: 'multi', label: 'MULTI MARKETS', icon: 'fa-layer-group' },
-  { id: 'cricket', label: 'CRICKET', icon: 'fa-baseball-bat-ball', badgeCount: '8 LIVE' },
-  { id: 'sportsbook', label: 'SPORTSBOOK', icon: 'fa-trophy' },
-  { id: 'casino', label: 'CASINO', icon: 'fa-dice' },
-  { id: 'fantasy11', label: 'FANTASY11', icon: 'fa-users-viewfinder', badge: 'NEW' },
-  { id: 'randora', label: 'RANDORA', icon: 'fa-gem', badge: 'HOT' },
-  { id: 'football', label: 'FOOTBALL', icon: 'fa-futbol', badgeCount: '5 LIVE' },
-  { id: 'tennis', label: 'TENNIS', icon: 'fa-table-tennis-paddle-ball', badgeCount: '4 LIVE' },
-  { id: 'horse-racing', label: 'HORSE RACING', icon: 'fa-horse' },
-  { id: 'greyhound', label: 'GREYHOUND', icon: 'fa-paw' },
-  { id: 'aviator', label: 'AVIATOR', icon: 'fa-jet-fighter' },
-  { id: 'slots', label: 'SLOTS', icon: 'fa-cubes' },
-  { id: 'binary', label: 'BINARY', icon: 'fa-chart-candlestick' }
+  { id: 'all', label: 'HOME', icon: 'fa-house', color: 'red' },
+  { id: 'multi', label: 'MULTI MARKETS', icon: 'fa-layer-group', color: 'purple' },
+  { id: 'cricket', label: 'CRICKET', icon: 'fa-baseball-bat-ball', color: 'maroon', badgeCount: '8' },
+  { id: 'sportsbook', label: 'SPORTSBOOK', icon: 'fa-trophy', color: 'gold' },
+  { id: 'casino', label: 'CASINO', icon: 'fa-dice', color: 'teal' },
+  { id: 'football', label: 'FOOTBALL', icon: 'fa-futbol', color: 'green' },
+  { id: 'tennis', label: 'TENNIS', icon: 'fa-table-tennis-paddle-ball', color: 'lime' },
+  { id: 'aviator', label: 'AVIATOR', icon: 'fa-jet-fighter', color: 'orange' },
+  { id: 'slots', label: 'SLOTS', icon: 'fa-cubes', color: 'pink' }
 ];
 
 export default function CategoryNav({ activeCat, onSelectCat }) {
@@ -24,15 +19,17 @@ export default function CategoryNav({ activeCat, onSelectCat }) {
         {CATEGORIES.map(cat => (
           <button 
             key={cat.id}
-            className={`cat-pill ${activeCat === cat.id ? 'active' : ''} ${cat.badge ? 'has-badge' : ''}`}
+            className={`cat-pill cat-${cat.color} ${activeCat === cat.id || (cat.id === 'all' && activeCat === 'home') ? 'active' : ''}`}
             onClick={() => onSelectCat(cat.id)}
           >
             <i className={`fa-solid ${cat.icon}`}></i>
             <span>{cat.label}</span>
             {cat.badgeCount && <span className="nav-count-badge">{cat.badgeCount}</span>}
-            {cat.badge && <span className="pill-badge pulse-badge">{cat.badge}</span>}
           </button>
         ))}
+        <button className="cat-promo-link" onClick={() => onSelectCat('casino')}>
+          👉 Andar Bahar
+        </button>
       </div>
     </nav>
   );

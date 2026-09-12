@@ -2,8 +2,17 @@ import React from 'react';
 
 export const THEMES = [
   {
+    id: 'light',
+    name: 'White Theme Classic (Default)',
+    desc: 'Classic Indian exchange look — white content, dark header, sharp back/lay odds',
+    primaryColor: '#ffffff',
+    accentColor: '#c9a227',
+    cardColor: '#ffffff',
+    badge: 'Default'
+  },
+  {
     id: 'obsidian',
-    name: 'Obsidian Gold (Default)',
+    name: 'Obsidian Gold',
     desc: 'Deep obsidian navy with gold accents & premium dark contrast',
     primaryColor: '#0a111a',
     accentColor: '#ffb703',
@@ -45,15 +54,6 @@ export const THEMES = [
     accentColor: '#fb7185',
     cardColor: '#32101b',
     badge: 'VIP'
-  },
-  {
-    id: 'light',
-    name: 'Classic Clean Light',
-    desc: 'Crisp day mode with high-contrast sharp exchange back/lay odds',
-    primaryColor: '#f1f5f9',
-    accentColor: '#0284c7',
-    cardColor: '#ffffff',
-    badge: 'Day Mode'
   }
 ];
 

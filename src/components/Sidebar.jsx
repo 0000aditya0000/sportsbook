@@ -17,6 +17,28 @@ const CRICKET_LEAGUES = [
   "European T20 Premier League"
 ];
 
+const SPORT_ITEMS = [
+  { id: 'cricket', label: 'Cricket', icon: 'fa-baseball-bat-ball', tone: 'cricket' },
+  { id: 'football', label: 'Football', icon: 'fa-futbol', tone: 'football' },
+  { id: 'tennis', label: 'Tennis', icon: 'fa-table-tennis-paddle-ball', tone: 'tennis' },
+  { id: 'horse-racing', label: 'Horse Racing', icon: 'fa-horse-head', tone: 'horse' },
+  { id: 'greyhound', label: 'Greyhound Racing', icon: 'fa-dog', tone: 'hound' },
+  { id: 'sportsbook', label: 'Sportsbook', icon: 'fa-trophy', tone: 'trophy' },
+  { id: 'casino', label: 'Casino', icon: 'fa-heart', tone: 'casino' },
+  { id: 'aviator', label: 'Aviator', icon: 'fa-rocket', tone: 'aviator' },
+  { id: 'slots', label: 'Slot Games', icon: 'fa-dice', tone: 'slots' },
+  { id: 'binary', label: 'Binary', icon: 'fa-chart-column', tone: 'binary' },
+  { id: 'politics', label: 'Politics', icon: 'fa-landmark', tone: 'politics' },
+  { id: 'table-tennis', label: 'Table Tennis', icon: 'fa-table-tennis-paddle-ball', tone: 'tt' },
+  { id: 'basketball', label: 'Basketball', icon: 'fa-basketball', tone: 'basket' },
+  { id: 'baseball', label: 'Baseball', icon: 'fa-baseball', tone: 'baseball' },
+  { id: 'hockey', label: 'Ice Hockey', icon: 'fa-hockey-puck', tone: 'hockey' },
+  { id: 'volleyball', label: 'Volleyball', icon: 'fa-volleyball', tone: 'volley' },
+  { id: 'kabaddi', label: 'Kabaddi', icon: 'fa-people-arrows', tone: 'kabaddi' },
+  { id: 'promotions', label: 'Promotions', icon: 'fa-bullhorn', tone: 'promo' },
+  { id: 'rules', label: 'Game Rules', icon: 'fa-clipboard-list', tone: 'rules' }
+];
+
 export default function Sidebar({ 
   activeSport, 
   onSelectSport, 
@@ -24,7 +46,7 @@ export default function Sidebar({
   onCloseMobile,
   onOpenSessionTracker 
 }) {
-  const [drilldownSport, setDrilldownSport] = useState(null); // 'football' | 'cricket' | null
+  const [drilldownSport, setDrilldownSport] = useState(null);
 
   const handleSportClick = (sportId) => {
     if (sportId === 'football' || sportId === 'cricket') {
@@ -32,12 +54,16 @@ export default function Sidebar({
     } else {
       setDrilldownSport(null);
     }
-    onSelectSport(sportId);
+    if (sportId !== 'promotions' && sportId !== 'rules' && sportId !== 'politics') {
+      onSelectSport(sportId === 'table-tennis' ? 'tennis' : sportId === 'hockey' || sportId === 'basketball' || sportId === 'baseball' || sportId === 'volleyball' || sportId === 'kabaddi' || sportId === 'binary' ? 'all' : sportId);
+    }
+    if (sportId === 'promotions' || sportId === 'rules') {
+      alert(sportId === 'promotions' ? 'Promotions coming soon' : 'Game Rules');
+    }
   };
 
   return (
     <>
-      {/* Mobile Backdrop */}
       {isOpen && (
         <div 
           className="mobile-sidebar-backdrop active" 
@@ -47,151 +73,61 @@ export default function Sidebar({
       )}
 
       <aside className={`sidebar-left ${isOpen ? 'mobile-open' : ''}`}>
-        {/* Mobile Header with Close Button */}
         <div className="sidebar-mobile-header">
-          <div className="smh-brand">
-            <i className="fa-solid fa-layer-group text-gold"></i>
-            <span>SPORTSBOOK MENU</span>
+          <div className="smh-brand classic-logo">
+            <span className="logo-rollix">ROLLIX</span>
+            <span className="logo-lotus-mark" aria-hidden="true">✦</span>
+            <span className="logo-book">BOOK</span>
           </div>
           <button className="smh-close-btn" onClick={onCloseMobile} aria-label="Close Menu">
             <i className="fa-solid fa-xmark"></i>
           </button>
         </div>
 
-        {/* Top Matches & Sports Main Anchors (Screenshot 1 & 2) */}
-        <div className="sidebar-top-anchors">
-        <div 
-          className={`anchor-item ${activeSport === 'all' && !drilldownSport ? 'active' : ''}`}
-          onClick={() => {
-            setDrilldownSport(null);
-            onSelectSport('all');
-          }}
-        >
-          <i className="fa-regular fa-star text-gold"></i>
-          <span>Top Matches</span>
-        </div>
-        <div 
-          className="anchor-item"
-          onClick={() => {
-            setDrilldownSport(null);
-            onSelectSport('all');
-          }}
-        >
-          <i className="fa-solid fa-house"></i>
-          <span>Sports</span>
-        </div>
-      </div>
-
-      {/* Drill-down View (Screenshot 1, 2, 3) */}
-      {drilldownSport ? (
-        <div className="sidebar-drilldown-block">
-          {/* Active Sport Title */}
-          <div className="drilldown-current-sport">
-            <i className={`fa-solid ${drilldownSport === 'cricket' ? 'fa-baseball-bat-ball text-cricket' : 'fa-futbol text-football'}`}></i>
-            <span>{drilldownSport === 'cricket' ? 'Cricket' : 'Football'}</span>
+        {drilldownSport ? (
+          <div className="sidebar-drilldown-block">
+            <div className="drilldown-current-sport">
+              <i className={`fa-solid ${drilldownSport === 'cricket' ? 'fa-baseball-bat-ball text-cricket' : 'fa-futbol text-football'}`}></i>
+              <span>{drilldownSport === 'cricket' ? 'Cricket' : 'Football'}</span>
+            </div>
+            <button className="btn-sidebar-previous" onClick={() => setDrilldownSport(null)}>
+              <i className="fa-solid fa-chevron-left"></i> Previous
+            </button>
+            <div className="drilldown-leagues-list">
+              {(drilldownSport === 'cricket' ? CRICKET_LEAGUES : FOOTBALL_LEAGUES).map((league, idx) => (
+                <div 
+                  key={idx} 
+                  className="league-item-row"
+                  onClick={() => alert(`Filtering matches for ${league}`)}
+                >
+                  <span>{league}</span>
+                  <i className="fa-solid fa-chevron-right arr-right"></i>
+                </div>
+              ))}
+            </div>
           </div>
-
-          {/* Previous Button */}
-          <button className="btn-sidebar-previous" onClick={() => setDrilldownSport(null)}>
-            <i className="fa-solid fa-chevron-left"></i> Previous
-          </button>
-
-          {/* League Hierarchy List */}
-          <div className="drilldown-leagues-list">
-            {(drilldownSport === 'cricket' ? CRICKET_LEAGUES : FOOTBALL_LEAGUES).map((league, idx) => (
-              <div 
-                key={idx} 
-                className="league-item-row"
-                onClick={() => alert(`Filtering matches for ${league}`)}
+        ) : (
+          <div className="sidebar-sports-list classic-sport-list">
+            {SPORT_ITEMS.map(item => (
+              <div
+                key={item.id}
+                className={`sidebar-item tone-${item.tone} ${activeSport === item.id ? 'active' : ''}`}
+                onClick={() => handleSportClick(item.id)}
               >
-                <span>{league}</span>
-                <i className="fa-solid fa-chevron-right arr-right"></i>
+                <div className={`sb-icon tone-${item.tone}`}>
+                  <i className={`fa-solid ${item.icon}`}></i>
+                </div>
+                <span className="sb-name">{item.label}</span>
               </div>
             ))}
           </div>
-        </div>
-      ) : (
-        /* Standard Sport List */
-        <div className="sidebar-sports-list">
-          <div className={`sidebar-item ${activeSport === 'all' ? 'active' : ''}`} onClick={() => handleSportClick('all')}>
-            <div className="sb-icon"><i className="fa-solid fa-globe"></i></div>
-            <span className="sb-name">All Sports</span>
-            <span className="sb-count">24</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'cricket' ? 'active' : ''}`} onClick={() => handleSportClick('cricket')}>
-            <div className="sb-icon cricket-icon"><i className="fa-solid fa-baseball-bat-ball"></i></div>
-            <span className="sb-name">Cricket</span>
-            <span className="sb-count live-num">8</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'football' ? 'active' : ''}`} onClick={() => handleSportClick('football')}>
-            <div className="sb-icon football-icon"><i className="fa-solid fa-futbol"></i></div>
-            <span className="sb-name">Football</span>
-            <span className="sb-count live-num">5</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'tennis' ? 'active' : ''}`} onClick={() => handleSportClick('tennis')}>
-            <div className="sb-icon tennis-icon"><i className="fa-solid fa-table-tennis-paddle-ball"></i></div>
-            <span className="sb-name">Tennis</span>
-            <span className="sb-count live-num">4</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'horse-racing' ? 'active' : ''}`} onClick={() => handleSportClick('horse-racing')}>
-            <div className="sb-icon horse-icon"><i className="fa-solid fa-horse-head"></i></div>
-            <span className="sb-name">Horse Racing</span>
-            <span className="sb-count">12</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'greyhound' ? 'active' : ''}`} onClick={() => handleSportClick('greyhound')}>
-            <div className="sb-icon hound-icon"><i className="fa-solid fa-paw"></i></div>
-            <span className="sb-name">Greyhound Racing</span>
-            <span className="sb-count">9</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'sportsbook' ? 'active' : ''}`} onClick={() => handleSportClick('sportsbook')}>
-            <div className="sb-icon trophy-icon"><i className="fa-solid fa-trophy"></i></div>
-            <span className="sb-name">Sportsbook Premium</span>
-            <span className="sb-tag">0%</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'casino' ? 'active' : ''}`} onClick={() => handleSportClick('casino')}>
-            <div className="sb-icon casino-icon"><i className="fa-solid fa-dice-d20"></i></div>
-            <span className="sb-name">Live Casino</span>
-            <span className="sb-tag hot-tag">HOT</span>
-          </div>
-          <div className={`sidebar-item ${activeSport === 'aviator' ? 'active' : ''}`} onClick={() => handleSportClick('aviator')}>
-            <div className="sb-icon aviator-icon"><i className="fa-solid fa-plane-departure"></i></div>
-            <span className="sb-name">Aviator Crash</span>
-            <span className="sb-tag gold-tag">x999</span>
-          </div>
-        </div>
-      )}
+        )}
 
-      {/* Feature Shortcuts */}
-      <div className="sidebar-section-divider">
-        <span>EXCHANGE FEATURES</span>
-      </div>
-      <div className="sidebar-shortcuts">
-        <button className="shortcut-pill" onClick={onOpenSessionTracker}>
-          <i className="fa-solid fa-bolt text-gold"></i> Live Cricket Fancy (Session)
-        </button>
-        <button className="shortcut-pill" onClick={() => handleSportClick('cricket')}>
-          <i className="fa-solid fa-shield-halved text-accent"></i> 0% Commission Bookmakers
-        </button>
-      </div>
-
-      {/* WhatsApp VIP Support Box */}
-      <div className="whatsapp-support-box">
-        <div className="wa-icon-glow">
-          <i className="fa-brands fa-whatsapp"></i>
+        <div className="sidebar-shortcuts desktop-only-flex">
+          <button className="shortcut-pill" onClick={onOpenSessionTracker}>
+            <i className="fa-solid fa-bolt text-gold"></i> Live Cricket Fancy
+          </button>
         </div>
-        <div className="wa-info">
-          <div className="wa-title">24/7 VIP Support</div>
-          <div className="wa-sub">Instant Deposit & Withdrawal</div>
-        </div>
-        <a 
-          href="https://wa.me/?text=Hi%20RollixBook%20Exchange%20VIP" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="wa-chat-btn"
-        >
-          Chat Now
-        </a>
-      </div>
       </aside>
     </>
   );

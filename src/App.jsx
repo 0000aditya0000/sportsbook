@@ -43,8 +43,13 @@ export default function App() {
   const [slipTab, setSlipTab] = useState('slip');
   const [quickBetActive, setQuickBetActive] = useState(false);
 
-  // Theme State
-  const [theme, setTheme] = useState(() => localStorage.getItem('rollix_theme') || localStorage.getItem('maxlotus_theme') || 'obsidian');
+  // Theme State — White Classic is default for mobile & desktop
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('rollix_theme') || localStorage.getItem('maxlotus_theme');
+    // Migrate old default (obsidian) to white classic once
+    if (!saved || saved === 'obsidian') return 'light';
+    return saved;
+  });
   const [themeModalOpen, setThemeModalOpen] = useState(false);
 
   // Apply theme class to body
@@ -167,15 +172,15 @@ export default function App() {
             outcomeType,
             betType,
             odds: Number(odds),
-            stake: 1000
-          },
-          ...prev
+            stake: 0
+          }
         ];
       }
     });
 
     setSlipTab('slip');
-    if (window.innerWidth <= 992) {
+    // On match detail, show classic inline bet box instead of bottom sheet
+    if (window.innerWidth <= 992 && !selectedMatch) {
       setShowMobileSlip(true);
     }
   };
@@ -287,6 +292,10 @@ export default function App() {
   // Place Bet
   const handlePlaceBet = () => {
     if (selections.length === 0) return;
+    if (selections.some(s => !s.stake || s.stake <= 0)) {
+      showToast('Please enter a stake amount', 'error');
+      return;
+    }
 
     let requiredExposure = 0;
     selections.forEach(sel => {
@@ -468,9 +477,19 @@ export default function App() {
               onBack={() => setSelectedMatch(null)}
               onSelectOdds={handleSelectOdds}
               onSelectFancy={handleAddFancyBet}
+              activeSelection={selections[0] || null}
+              onUpdateOdds={handleUpdateOdds}
+              onUpdateStake={handleUpdateStake}
+              onApplyPreset={handleApplyPreset}
+              onClearSlip={handleClearSlip}
+              onPlaceBet={handlePlaceBet}
+              openBetsCount={openBets.length}
+              onOpenBets={() => {
+                setSlipTab('open');
+                setShowMobileSlip(true);
+              }}
             />
           ) : showCasino ? (
-            /* Casino Lobby Page (Screenshot 5) */
             <CasinoLobby 
               onLaunchGame={(title, provider) => {
                 setGameModal({ isOpen: true, game: { title, provider } });
@@ -478,71 +497,81 @@ export default function App() {
             />
           ) : (
             <>
-              {/* Promo Hero */}
-              <section className="hero-banner-card">
-                <div className="hero-banner-content">
-                  <div className="hero-badge">
-                    <i className="fa-solid fa-crown"></i> ASIA'S #1 LIQUIDITY EXCHANGE
+              {/* Classic home: providers + featured games */}
+              {activeSport === 'all' && (
+                <section className="classic-home-top">
+                  <div className="provider-scroll-grid">
+                    {['Evolution', 'Ezugi', 'SexyBcrt', 'Turbo', 'Jili', 'Smartsoft', 'Spribe', 'MAC88'].map(p => (
+                      <button key={p} className="provider-tile" onClick={() => setActiveSport('casino')}>
+                        <span className="pt-logo">{p.slice(0, 2).toUpperCase()}</span>
+                        <span className="pt-name">{p}</span>
+                      </button>
+                    ))}
                   </div>
-                  <h1 className="hero-title">Play More. Win Bigger. Zero Delay.</h1>
-                  <p className="hero-subtitle">
-                    Back & Lay on Live InPlay Markets with Unlimited Payouts & 0% Bookmaker Margins.
-                  </p>
-                  <div className="hero-actions">
-                    <button className="btn-hero-primary" onClick={() => setSelectedMatch(data.cricket[0])}>
-                      <i className="fa-solid fa-baseball-bat-ball"></i> Open InPlay Match Center
-                    </button>
-                    <button className="btn-hero-secondary" onClick={() => setActiveSport('casino')}>
-                      <i className="fa-solid fa-dice"></i> Explore Live Casino
-                    </button>
-                  </div>
-                </div>
-                <div className="hero-banner-visual">
-                  <div className="hero-chip-stack">
-                    <span className="floating-chip chip-1">1.05</span>
-                    <span className="floating-chip chip-2">100x</span>
-                    <span className="floating-chip chip-3">LAY 2.10</span>
-                  </div>
-                </div>
-              </section>
 
-              {/* InPlay Exchange Master Section */}
-              <section className="exchange-market-section">
+                  <div className="game-tabs-row">
+                    {['Popular', 'New Launch', 'Indian Games', 'Roulette', 'AE Sexy', 'Slot'].map((t, i) => (
+                      <button key={t} className={`game-tab ${i === 0 ? 'active' : ''}`} onClick={() => setActiveSport('casino')}>{t}</button>
+                    ))}
+                  </div>
+
+                  <div className="featured-games-row">
+                    {[
+                      { title: 'AVIATORX', grad: 'aviator-grad', icon: 'fa-plane' },
+                      { title: '24*7 LIVE PREDICTION', grad: 'predict-grad', icon: 'fa-coins' },
+                      { title: 'MINES', grad: 'mines-grad', icon: 'fa-bomb' }
+                    ].map(g => (
+                      <div key={g.title} className={`featured-game-card ${g.grad}`} onClick={() => setGameModal({ isOpen: true, game: { title: g.title, provider: 'Rollix' } })}>
+                        <i className={`fa-solid ${g.icon} fgc-icon`}></i>
+                        <span className="fgc-title">{g.title}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="fantasy-fun-section">
+                    <div className="ffs-header">
+                      <i className="fa-solid fa-gem"></i> FANTASY & FUN
+                    </div>
+                    <div className="ffs-banners">
+                      <button className="ffs-banner fantasy" onClick={() => setActiveCategory('fantasy11')}>
+                        <span>FANTASY11</span>
+                        <small>Play & Win Daily</small>
+                      </button>
+                      <button className="ffs-banner randora" onClick={() => setActiveCategory('randora')}>
+                        <span>RANDORA</span>
+                        <small>Pot of Gold</small>
+                      </button>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              <section className="exchange-market-section classic-exchange">
                 <div className="section-banner inplay-banner">
                   <div className="banner-title-group">
                     <i className="fa-solid fa-circle-play banner-icon-live"></i>
-                    <span className="banner-title-text">InPlay Exchange</span>
-                    <span className="banner-active-pill">
-                      <span className="radar-pulse"></span> 17 LIVE
-                    </span>
-                  </div>
-                  <div className="banner-tools">
-                    <button className="tool-pill active"><i className="fa-solid fa-plus"></i> All</button>
-                    <button className="tool-pill"><i className="fa-solid fa-bolt"></i> Live</button>
-                    <button className="tool-pill"><i className="fa-solid fa-vr-cardboard"></i> Virtual</button>
-                    <button className="tool-pill"><i className="fa-solid fa-crown"></i> Premium</button>
+                    <span className="banner-title-text">INPLAY</span>
                   </div>
                 </div>
 
-                {/* 6-Column Header */}
-                <div className="odds-table-header">
+                <div className="odds-table-header desktop-odds-header">
                   <div className="col-head col-info">EVENT DETAILS</div>
                   <div className="col-head col-odds-group col-1">
-                    <span className="pair-title">1 (HOME)</span>
+                    <span className="pair-title">1</span>
                     <div className="pair-labels">
                       <span className="back-lbl">BACK</span>
                       <span className="lay-lbl">LAY</span>
                     </div>
                   </div>
                   <div className="col-head col-odds-group col-x">
-                    <span className="pair-title">X (DRAW)</span>
+                    <span className="pair-title">X</span>
                     <div className="pair-labels">
                       <span className="back-lbl">BACK</span>
                       <span className="lay-lbl">LAY</span>
                     </div>
                   </div>
                   <div className="col-head col-odds-group col-2">
-                    <span className="pair-title">2 (AWAY)</span>
+                    <span className="pair-title">2</span>
                     <div className="pair-labels">
                       <span className="back-lbl">BACK</span>
                       <span className="lay-lbl">LAY</span>
@@ -550,7 +579,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Cricket Block */}
                 {showCricket && (
                   <OddsGrid 
                     events={filteredCricket}
@@ -562,8 +590,6 @@ export default function App() {
                     onSelectEvent={(e) => setSelectedMatch(e)}
                   />
                 )}
-
-                {/* Football Block */}
                 {showFootball && (
                   <OddsGrid 
                     events={filteredFootball}
@@ -575,8 +601,6 @@ export default function App() {
                     onSelectEvent={(e) => setSelectedMatch(e)}
                   />
                 )}
-
-                {/* Tennis Block */}
                 {showTennis && (
                   <OddsGrid 
                     events={filteredTennis}
@@ -590,21 +614,14 @@ export default function App() {
                 )}
               </section>
 
-              {/* Upcoming Events Section (Screenshot 1) */}
               {activeSport === 'all' && (
                 <section className="exchange-market-section">
                   <div className="section-banner upcoming-banner">
                     <div className="banner-title-group">
                       <i className="fa-regular fa-clock banner-icon-upcoming"></i>
                       <span className="banner-title-text">Upcoming Events</span>
-                      <span className="banner-active-pill">NEXT 24H</span>
-                    </div>
-                    <div className="banner-tools">
-                      <button className="tool-pill active"><i className="fa-solid fa-calendar-day"></i> Today</button>
-                      <button className="tool-pill"><i className="fa-solid fa-forward"></i> Tomorrow</button>
                     </div>
                   </div>
-
                   <OddsGrid 
                     events={filteredUpcoming}
                     title="Upcoming Matches"
@@ -740,6 +757,25 @@ export default function App() {
         onOpenModal={() => setThemeModalOpen(true)}
         onNextTheme={handleCycleTheme}
       />
+
+      {/* Classic FABs */}
+      <a
+        className="fab-whatsapp"
+        href="https://wa.me/?text=Hi%20RollixBook%20Support"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp Support"
+      >
+        <i className="fa-brands fa-whatsapp"></i>
+      </a>
+      <button
+        className="fab-minigames"
+        onClick={() => setActiveSport('casino')}
+        aria-label="Mini Games"
+      >
+        <i className="fa-solid fa-dice"></i>
+        <span>MINI</span>
+      </button>
     </div>
   );
 }
