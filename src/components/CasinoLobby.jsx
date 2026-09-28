@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { CASINO_GAMES, PROVIDER_BANNERS } from '../data/casinoMedia';
 
