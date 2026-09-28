@@ -1,19 +1,21 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import CategoryNav from './components/CategoryNav';
-import Sidebar from './components/Sidebar';
-import OddsGrid from './components/OddsGrid';
-import MatchDetailView from './components/MatchDetailView';
-import CasinoLobby from './components/CasinoLobby';
-import BetSlip from './components/BetSlip';
-import AccountDrawer from './components/AccountDrawer';
-import AccountPages from './components/AccountPages';
-import { DepositModal, GameModal } from './components/Modals';
-import { LoginModal, RegisterModal } from './components/AuthModals';
-import MobileBottomNav from './components/MobileBottomNav';
-import { INITIAL_DATA } from './data/mockData';
-import { PROVIDER_BANNERS, FEATURED_GAMES, FANTASY_BANNERS } from './data/casinoMedia';
-import { playOddsTickSound, playChirpSound, playWinChime } from './utils/audio';
+import Header from './Header';
+import CategoryNav from './CategoryNav';
+import Sidebar from './Sidebar';
+import OddsGrid from './OddsGrid';
+import MatchDetailView from './MatchDetailView';
+import CasinoLobby from './CasinoLobby';
+import BetSlip from './BetSlip';
+import AccountDrawer from './AccountDrawer';
+import AccountPages from './AccountPages';
+import { DepositModal, GameModal } from './Modals';
+import { LoginModal, RegisterModal } from './AuthModals';
+import MobileBottomNav from './MobileBottomNav';
+import { INITIAL_DATA } from '../data/mockData';
+import { PROVIDER_BANNERS, FEATURED_GAMES, FANTASY_BANNERS } from '../data/casinoMedia';
+import { playOddsTickSound, playChirpSound, playWinChime } from '../utils/audio';
 
 const GUEST_USER = {
   username: '',
@@ -30,7 +32,7 @@ const DUMMY_OPEN_BETS = [
   { id: "88922", match: "Essex W vs Yorkshire W", runner: "Yorkshire W", type: "LAY", odds: 2.14, stake: 3000, liability: 3420, cashoutVal: 2850 }
 ];
 
-export default function App() {
+export default function SportsbookApp() {
   const [data, setData] = useState(INITIAL_DATA);
   const [flashStates, setFlashStates] = useState({});
 
@@ -40,35 +42,33 @@ export default function App() {
   const [selectedMatch, setSelectedMatch] = useState(null);
 
   // Auth — dummy only (no backend)
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('rollix_logged_in') === '1');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authView, setAuthView] = useState(null); // 'login' | 'register' | null
-  const [user, setUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem('rollix_user');
-      if (saved) return { ...GUEST_USER, ...JSON.parse(saved), soundEnabled: true };
-    } catch { /* ignore */ }
-    return { ...GUEST_USER };
-  });
+  const [user, setUser] = useState(() => ({ ...GUEST_USER }));
 
   const [selections, setSelections] = useState([]);
-  const [openBets, setOpenBets] = useState(() =>
-    localStorage.getItem('rollix_logged_in') === '1' ? DUMMY_OPEN_BETS : []
-  );
+  const [openBets, setOpenBets] = useState([]);
   const [slipTab, setSlipTab] = useState('slip');
   const [quickBetActive, setQuickBetActive] = useState(false);
 
-  // White classic theme only
+  // White classic theme only + hydrate auth from localStorage (client)
   useEffect(() => {
     document.body.className = 'theme-light';
-    localStorage.setItem('rollix_theme', 'light');
+    try {
+      localStorage.setItem('rollix_theme', 'light');
+      const logged = localStorage.getItem('rollix_logged_in') === '1';
+      if (logged) {
+        const saved = localStorage.getItem('rollix_user');
+        if (saved) {
+          setUser({ ...GUEST_USER, ...JSON.parse(saved), soundEnabled: true });
+        }
+        setIsLoggedIn(true);
+        setOpenBets(DUMMY_OPEN_BETS);
+      } else if (!localStorage.getItem('rollix_auth_dismissed')) {
+        setAuthView('login');
+      }
+    } catch { /* ignore */ }
   }, []);
-
-  // Open login once for guests
-  useEffect(() => {
-    if (!isLoggedIn && !localStorage.getItem('rollix_auth_dismissed')) {
-      setAuthView('login');
-    }
-  }, [isLoggedIn]);
 
   const [showAccountDrawer, setShowAccountDrawer] = useState(false);
   const [accountModal, setAccountModal] = useState({ isOpen: false, page: 'transactions' });
