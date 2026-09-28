@@ -1,3 +1,5 @@
+'use client';
+
 // Theme switcher removed — app uses White Theme Classic only.
 export const THEMES = [
   {
