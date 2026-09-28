@@ -3,14 +3,15 @@ import React from 'react';
 export default function AccountDrawer({
   isOpen,
   onClose,
+  displayName = 'Demo User',
   mainBalance,
   exposure,
   bonus = 0,
   onOpenDeposit,
   onOpenWithdraw,
   onViewOpenBets,
-  onOpenTheme,
-  onSelectPage
+  onSelectPage,
+  onLogout
 }) {
   return (
     <>
@@ -27,7 +28,7 @@ export default function AccountDrawer({
               <i className="fa-solid fa-user"></i>
             </div>
             <div className="user-meta">
-              <span className="user-name">Demo User</span>
+              <span className="user-name">{displayName || 'Demo User'}</span>
             </div>
           </div>
           <button className="drawer-close-btn" onClick={onClose} aria-label="Close Account Panel">
@@ -114,14 +115,9 @@ export default function AccountDrawer({
             </div>
           </div>
 
-          {/* Account Settings (Screenshot 1 + Theme Option) */}
+          {/* Account Settings */}
           <div className="drawer-section-heading">Account Settings</div>
           <div className="drawer-menu-list">
-            <div className="drawer-link" onClick={onOpenTheme}>
-              <div className="dl-icon"><i className="fa-solid fa-palette text-gold"></i></div>
-              <div className="dl-label">Theme & Appearance</div>
-              <i className="fa-solid fa-chevron-right dl-arr"></i>
-            </div>
             <div className="drawer-link" onClick={() => onSelectPage('settings')}>
               <div className="dl-icon"><i className="fa-solid fa-gear"></i></div>
               <div className="dl-label">Settings</div>
@@ -130,6 +126,11 @@ export default function AccountDrawer({
             <div className="drawer-link" onClick={() => onSelectPage('security')}>
               <div className="dl-icon"><i className="fa-solid fa-shield-halved"></i></div>
               <div className="dl-label">2FA</div>
+              <i className="fa-solid fa-chevron-right dl-arr"></i>
+            </div>
+            <div className="drawer-link logout-link" onClick={onLogout}>
+              <div className="dl-icon"><i className="fa-solid fa-right-from-bracket"></i></div>
+              <div className="dl-label">Logout</div>
               <i className="fa-solid fa-chevron-right dl-arr"></i>
             </div>
           </div>

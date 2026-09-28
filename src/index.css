@@ -3,117 +3,64 @@
    ========================================================================== */
 
 :root {
-  /* Surface Colors */
-  --bg-primary: #0a111a;
-  --bg-secondary: #0f1825;
-  --bg-card: #152233;
-  --bg-card-hover: #1b2b40;
-  --bg-elevated: #1e3049;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(255, 255, 255, 0.18);
+  /* White Theme Classic (only theme) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fafafa;
+  --bg-elevated: #f0f0f0;
+  --border-subtle: #e5e7eb;
+  --border-active: #cbd5e1;
 
-  /* Typography Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
   --text-dark: #0f172a;
 
-  /* Exchange Odds Colors (High Visibility) */
-  --odds-back-bg: #a6ddfc;
-  --odds-back-hover: #86cefa;
-  --odds-back-text: #05263d;
-  --odds-lay-bg: #f9c7d1;
-  --odds-lay-hover: #f7a8b8;
-  --odds-lay-text: #420815;
+  --odds-back-bg: #a7d8f5;
+  --odds-back-hover: #8ecceb;
+  --odds-back-text: #0f172a;
+  --odds-lay-bg: #f5b8c4;
+  --odds-lay-hover: #efa3b3;
+  --odds-lay-text: #0f172a;
 
-  /* Odds Ticking Indicators */
-  --odds-drift-up: #10b981;    /* Price lengthened (green) */
-  --odds-shorten-down: #ef4444; /* Price shortened (red) */
+  --odds-drift-up: #10b981;
+  --odds-shorten-down: #ef4444;
 
-  /* Brand Accents */
-  --accent-gold: #ffb703;
+  --accent-gold: #c9a227;
   --accent-gold-light: #fed976;
-  --accent-blue: #38bdf8;
-  --accent-green-inplay: #1b7e36;
+  --accent-blue: #0284c7;
+  --accent-green-inplay: #22c55e;
   --accent-orange-upcoming: #c75627;
   --accent-purple: #8b5cf6;
   --accent-danger: #ef4444;
   --accent-success: #22c55e;
   --accent-whatsapp: #25d366;
 
-  /* Metrics & Dimensions */
   --header-height: 64px;
   --subnav-height: 44px;
   --sidebar-width: 240px;
   --betslip-width: 340px;
   --mobile-bottom-height: 60px;
+  --header-bar: #1a1a1a;
   
-  /* Fonts */
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-numbers: 'JetBrains Mono', monospace;
   
-  /* Shadows & Glassmorphism */
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.25);
-  --shadow-popup: 0 16px 48px rgba(0, 0, 0, 0.45);
-  --glass-bg: rgba(15, 24, 37, 0.85);
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-popup: 0 16px 48px rgba(0, 0, 0, 0.18);
+  --glass-bg: rgba(255, 255, 255, 0.9);
   --glass-blur: blur(12px);
 }
 
+/* Removed other color themes — white classic only */
+body.theme-light {
+  /* inherits :root white classic */
+}
+
 /* ==========================================================================
-   THEME PALETTE OVERRIDES
+   THEME — White classic only (other palettes removed)
    ========================================================================== */
-body.theme-emerald {
-  --bg-primary: #041911;
-  --bg-secondary: #08261b;
-  --bg-card: #0e3b2b;
-  --bg-card-hover: #154c38;
-  --bg-elevated: #1b5d45;
-  --border-subtle: rgba(52, 211, 153, 0.15);
-  --border-active: rgba(52, 211, 153, 0.35);
-  --accent-gold: #34d399;
-  --accent-blue: #2dd4bf;
-  --accent-green-inplay: #059669;
-}
-
-body.theme-sapphire {
-  --bg-primary: #060e1e;
-  --bg-secondary: #0c1830;
-  --bg-card: #132446;
-  --bg-card-hover: #1b325f;
-  --bg-elevated: #223f74;
-  --border-subtle: rgba(56, 189, 248, 0.15);
-  --border-active: rgba(56, 189, 248, 0.35);
-  --accent-gold: #38bdf8;
-  --accent-blue: #60a5fa;
-  --accent-green-inplay: #0284c7;
-}
-
-body.theme-neon {
-  --bg-primary: #0f091f;
-  --bg-secondary: #17102e;
-  --bg-card: #221842;
-  --bg-card-hover: #2e2159;
-  --bg-elevated: #3b2b71;
-  --border-subtle: rgba(236, 72, 153, 0.2);
-  --border-active: rgba(236, 72, 153, 0.4);
-  --accent-gold: #f472b6;
-  --accent-blue: #c084fc;
-  --accent-green-inplay: #9333ea;
-}
-
-body.theme-crimson {
-  --bg-primary: #15070a;
-  --bg-secondary: #220b12;
-  --bg-card: #2d0e19;
-  --bg-card-hover: #3f1524;
-  --bg-elevated: #4e1a2d;
-  --border-subtle: rgba(244, 63, 94, 0.22);
-  --border-active: rgba(244, 63, 94, 0.45);
-  --accent-gold: #fb7185;
-  --accent-blue: #f43f5e;
-  --accent-green-inplay: #e11d48;
-}
-
 body.theme-light {
   --bg-primary: #ffffff;
   --bg-secondary: #f5f5f5;
@@ -355,8 +302,8 @@ input, select {
    ========================================================================== */
 .master-header {
   height: var(--header-height);
-  background: linear-gradient(180deg, #0d1522 0%, #090e17 100%);
-  border-bottom: 1px solid var(--border-subtle);
+  background: #1a1a1a;
+  border-bottom: 1px solid #111;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -364,7 +311,8 @@ input, select {
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  color: #fff;
 }
 
 .header-left {
@@ -1666,8 +1614,8 @@ input, select {
 
 .casino-rich-card {
   position: relative;
-  height: 120px;
-  border-radius: 8px;
+  height: 140px;
+  border-radius: 10px;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -1676,11 +1624,22 @@ input, select {
   cursor: pointer;
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.casino-rich-card.has-image {
+  background-color: #1f2937;
+}
+
+.casino-rich-card .crc-img-fallback {
+  display: none;
 }
 
 .casino-rich-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 .from-amber { background: linear-gradient(135deg, #78350f 0%, #1e1b4b 100%); }
@@ -1718,7 +1677,7 @@ input, select {
 
 .crc-provider {
   font-size: 9px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .crc-play-hover-btn {
@@ -4277,54 +4236,43 @@ body.theme-light .cat-pill.active {
   margin-bottom: 12px;
 }
 
-.provider-scroll-grid {
+.provider-banner-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(70px, 1fr));
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
   gap: 8px;
-  overflow-x: auto;
 }
 
-@media (min-width: 768px) {
-  .provider-scroll-grid {
-    grid-template-columns: repeat(8, 1fr);
-  }
-}
-
-.provider-tile {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #1f2937;
-  color: #fff;
-  border-radius: 6px;
-  padding: 8px 10px;
-  min-height: 42px;
-  text-align: left;
-}
-
-body.theme-light .provider-tile {
-  background: #1f2937;
-}
-
-.pt-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  background: #374151;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.pt-name {
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
+.provider-banner {
+  position: relative;
+  min-height: 64px;
+  border-radius: 8px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-color: #1f2937;
+  text-align: left;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.provider-banner:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.pb-name {
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  max-width: 55%;
+  line-height: 1.2;
 }
 
 .game-tabs-row {
@@ -4359,7 +4307,7 @@ body.theme-light .provider-tile {
 .featured-game-card {
   position: relative;
   border-radius: 12px;
-  min-height: 160px;
+  min-height: 170px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4368,24 +4316,30 @@ body.theme-light .provider-tile {
   cursor: pointer;
   overflow: hidden;
   color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-color: #111827;
 }
 
-.fgc-icon {
-  font-size: 42px;
-  margin-bottom: 24px;
-  opacity: 0.9;
+.featured-game-card.has-image .fgc-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0; /* background-image is primary; keep for preload */
 }
 
-.fgc-title {
-  font-size: 11px;
+.featured-game-card .fgc-title {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
   font-weight: 800;
   text-align: center;
   letter-spacing: 0.3px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
-
-.aviator-grad { background: linear-gradient(160deg, #1e3a5f, #0ea5e9); }
-.predict-grad { background: linear-gradient(160deg, #7c2d12, #ea580c); }
-.mines-grad { background: linear-gradient(160deg, #831843, #db2777); }
 
 .fantasy-fun-section {
   border-radius: 0;
@@ -4412,7 +4366,7 @@ body.theme-light .provider-tile {
 }
 
 .ffs-banner {
-  min-height: 100px;
+  min-height: 110px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -4422,20 +4376,56 @@ body.theme-light .provider-tile {
   color: #fff;
   font-weight: 800;
   text-align: left;
+  background-size: cover;
+  background-position: center;
+  border: none;
+  cursor: pointer;
 }
 
 .ffs-banner small {
   font-weight: 500;
-  opacity: 0.85;
+  opacity: 0.9;
   margin-top: 4px;
 }
 
-.ffs-banner.fantasy {
-  background: linear-gradient(135deg, #064e3b, #059669);
+.ffs-banner.has-image {
+  background-color: #064e3b;
 }
 
-.ffs-banner.randora {
-  background: linear-gradient(135deg, #713f12, #eab308);
+@media (max-width: 992px) {
+  .provider-banner-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .provider-banner {
+    min-height: 58px;
+  }
+  .pb-name {
+    font-size: 11px;
+  }
+  .featured-game-card {
+    min-height: 150px;
+  }
+}
+
+@media (min-width: 993px) {
+  .provider-banner-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .casino-page-providers {
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 540px) {
+  .provider-banner-grid {
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: minmax(160px, 70%);
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
 }
 
 /* InPlay classic bar */
@@ -4948,13 +4938,18 @@ body.theme-light .provider-tile {
     min-height: 140px;
   }
 
-  .provider-scroll-grid {
-    display: flex;
+  .provider-banner-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: minmax(168px, 72%);
     overflow-x: auto;
+    gap: 8px;
   }
 
-  .provider-tile {
-    min-width: 120px;
+  .provider-banner {
+    min-width: 168px;
+    min-height: 56px;
   }
 
   .theme-floating-bar {
@@ -5419,3 +5414,360 @@ body.theme-light .section-banner.inplay-banner {
 
 
 
+
+/* ==========================================================================
+   AUTH MODALS � White classic Login / Register
+   ========================================================================== */
+.auth-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.auth-modal {
+  width: 100%;
+  max-width: 400px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 18px 22px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  color: #111827;
+}
+
+.auth-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.auth-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e5e7eb;
+  color: #111;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.auth-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.auth-brand {
+  justify-content: center;
+  margin: 8px 0 18px;
+  font-size: 22px;
+}
+
+.auth-brand .logo-rollix,
+.auth-brand .logo-book {
+  font-size: 22px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-login-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 10px;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.auth-input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fff;
+  color: #111;
+  font-size: 13px;
+}
+
+.auth-input::placeholder {
+  color: #9ca3af;
+  text-align: center;
+}
+
+.auth-input-icon-wrap {
+  position: relative;
+}
+
+.auth-input-icon-wrap .auth-input {
+  padding-right: 40px;
+  text-align: left;
+}
+
+.auth-input-icon-wrap .auth-input::placeholder {
+  text-align: center;
+}
+
+.auth-eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 14px;
+  padding: 4px;
+}
+
+.auth-select-wrap {
+  position: relative;
+}
+
+.auth-select {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+}
+
+.auth-select-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 5;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.auth-select-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #111;
+}
+
+.auth-select-menu button.active,
+.auth-select-menu button:hover {
+  background: #dbeafe;
+}
+
+.auth-link-underline {
+  background: none;
+  border: none;
+  color: #111;
+  text-decoration: underline;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0;
+  width: fit-content;
+}
+
+.auth-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-btn-primary {
+  background: #1e293b;
+  color: #fff;
+}
+
+.auth-btn-demo {
+  background: #f5c518;
+  color: #111;
+}
+
+.auth-btn-muted {
+  background: #6b7280;
+  color: #fff;
+}
+
+.auth-btn-muted.ready {
+  background: #16a34a;
+}
+
+.auth-btn-muted:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-btn-google {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: #111;
+  font-weight: 700;
+  max-width: 180px;
+  margin: 0 auto;
+  border-radius: 999px;
+  height: 42px;
+}
+
+.auth-switch-text {
+  text-align: center;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.auth-phone-row {
+  display: flex;
+  gap: 8px;
+}
+
+.auth-ccode {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  background: #fff;
+}
+
+.auth-otp-wrap .auth-input {
+  padding-right: 100px;
+}
+
+.auth-inline-verify {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #e5e7eb;
+  color: #374151;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 10px;
+  border-radius: 6px;
+}
+
+.auth-inline-verify:disabled {
+  opacity: 0.5;
+}
+
+.auth-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.auth-ok-hint {
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -4px;
+}
+
+.header-auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-head-login {
+  background: #374151;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 999px;
+}
+
+.btn-head-signup {
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 999px;
+}
+
+.theme-floating-bar,
+.theme-modal-box {
+  display: none !important;
+}
+
+.logout-link .dl-label {
+  color: #dc2626;
+}
+
+@media (max-width: 480px) {
+  .auth-modal {
+    max-width: 100%;
+    border-radius: 14px;
+    padding: 14px 14px 18px;
+  }
+  .auth-login-row {
+    grid-template-columns: 1fr;
+  }
+}

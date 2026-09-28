@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import CategoryNav from './components/CategoryNav';
 import Sidebar from './components/Sidebar';
-import CricketTracker from './components/CricketTracker';
 import OddsGrid from './components/OddsGrid';
 import MatchDetailView from './components/MatchDetailView';
 import CasinoLobby from './components/CasinoLobby';
@@ -10,79 +9,122 @@ import BetSlip from './components/BetSlip';
 import AccountDrawer from './components/AccountDrawer';
 import AccountPages from './components/AccountPages';
 import { DepositModal, GameModal } from './components/Modals';
+import { LoginModal, RegisterModal } from './components/AuthModals';
 import MobileBottomNav from './components/MobileBottomNav';
-import ThemeSwitcher, { THEMES, ThemeFloatingToggle } from './components/ThemeSwitcher';
 import { INITIAL_DATA } from './data/mockData';
+import { PROVIDER_BANNERS, FEATURED_GAMES, FANTASY_BANNERS } from './data/casinoMedia';
 import { playOddsTickSound, playChirpSound, playWinChime } from './utils/audio';
 
+const GUEST_USER = {
+  username: '',
+  displayName: '',
+  phone: '',
+  mainBalance: 0,
+  exposure: 0,
+  bonus: 0,
+  soundEnabled: true
+};
+
+const DUMMY_OPEN_BETS = [
+  { id: "88921", match: "England vs Pakistan", runner: "England", type: "BACK", odds: 1.85, stake: 5000, profit: 4250, cashoutVal: 4100 },
+  { id: "88922", match: "Essex W vs Yorkshire W", runner: "Yorkshire W", type: "LAY", odds: 2.14, stake: 3000, liability: 3420, cashoutVal: 2850 }
+];
+
 export default function App() {
-  // App Data & Live Odds
   const [data, setData] = useState(INITIAL_DATA);
   const [flashStates, setFlashStates] = useState({});
 
-  // Filter & Search
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSport, setActiveSport] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedMatch, setSelectedMatch] = useState(null); // When viewing match detail view (Screenshot 2, 3, 4)
+  const [selectedMatch, setSelectedMatch] = useState(null);
 
-  // User State
-  const [user, setUser] = useState({
-    mainBalance: 145280.00,
-    exposure: 8450.00,
-    bonus: 0.00,
-    soundEnabled: true
+  // Auth — dummy only (no backend)
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('rollix_logged_in') === '1');
+  const [authView, setAuthView] = useState(null); // 'login' | 'register' | null
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('rollix_user');
+      if (saved) return { ...GUEST_USER, ...JSON.parse(saved), soundEnabled: true };
+    } catch { /* ignore */ }
+    return { ...GUEST_USER };
   });
 
-  // Betslip State
   const [selections, setSelections] = useState([]);
-  const [openBets, setOpenBets] = useState([
-    { id: "88921", match: "England vs Pakistan", runner: "England", type: "BACK", odds: 1.85, stake: 5000, profit: 4250, cashoutVal: 4100 },
-    { id: "88922", match: "Essex W vs Yorkshire W", runner: "Yorkshire W", type: "LAY", odds: 2.14, stake: 3000, liability: 3420, cashoutVal: 2850 }
-  ]);
+  const [openBets, setOpenBets] = useState(() =>
+    localStorage.getItem('rollix_logged_in') === '1' ? DUMMY_OPEN_BETS : []
+  );
   const [slipTab, setSlipTab] = useState('slip');
   const [quickBetActive, setQuickBetActive] = useState(false);
 
-  // Theme State — White Classic is default for mobile & desktop
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('rollix_theme') || localStorage.getItem('maxlotus_theme');
-    // Migrate old default (obsidian) to white classic once
-    if (!saved || saved === 'obsidian') return 'light';
-    return saved;
-  });
-  const [themeModalOpen, setThemeModalOpen] = useState(false);
-
-  // Apply theme class to body
+  // White classic theme only
   useEffect(() => {
-    document.body.className = theme === 'light' ? 'theme-light' : `dark-theme theme-${theme}`;
-    localStorage.setItem('rollix_theme', theme);
-  }, [theme]);
+    document.body.className = 'theme-light';
+    localStorage.setItem('rollix_theme', 'light');
+  }, []);
 
-  const handleCycleTheme = () => {
-    const currentIndex = THEMES.findIndex(t => t.id === theme);
-    const nextIndex = (currentIndex + 1) % THEMES.length;
-    const nextTheme = THEMES[nextIndex].id;
-    setTheme(nextTheme);
-    showToast(`Color Theme: ${THEMES[nextIndex].name}`, 'info');
-  };
+  // Open login once for guests
+  useEffect(() => {
+    if (!isLoggedIn && !localStorage.getItem('rollix_auth_dismissed')) {
+      setAuthView('login');
+    }
+  }, [isLoggedIn]);
 
-  // UI Panels State
   const [showAccountDrawer, setShowAccountDrawer] = useState(false);
   const [accountModal, setAccountModal] = useState({ isOpen: false, page: 'transactions' });
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [showMobileSlip, setShowMobileSlip] = useState(false);
-  const [showCricketTracker, setShowCricketTracker] = useState(true);
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [gameModal, setGameModal] = useState({ isOpen: false, game: null });
   const [toasts, setToasts] = useState([]);
 
-  // Toast Helper
   const showToast = (message, type = 'info') => {
     const id = Date.now() + Math.random();
     setToasts(prev => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, 3200);
+  };
+
+  const applyLoggedInUser = (profile) => {
+    const next = {
+      ...GUEST_USER,
+      ...profile,
+      soundEnabled: true
+    };
+    setUser(next);
+    setIsLoggedIn(true);
+    setOpenBets(DUMMY_OPEN_BETS);
+    localStorage.setItem('rollix_logged_in', '1');
+    localStorage.setItem('rollix_user', JSON.stringify({
+      username: next.username,
+      displayName: next.displayName,
+      phone: next.phone,
+      mainBalance: next.mainBalance,
+      exposure: next.exposure,
+      bonus: next.bonus
+    }));
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser({ ...GUEST_USER });
+    setOpenBets([]);
+    setSelections([]);
+    setShowAccountDrawer(false);
+    localStorage.removeItem('rollix_logged_in');
+    localStorage.removeItem('rollix_user');
+    showToast('Logged out', 'info');
+    setAuthView('login');
+  };
+
+  const requireAuth = (action) => {
+    if (!isLoggedIn) {
+      setAuthView('login');
+      showToast('Please login to continue', 'info');
+      return;
+    }
+    action?.();
   };
 
   // Real-Time Odds Fluctuation Simulator
@@ -147,6 +189,11 @@ export default function App() {
   // Handle Odds Selection
   const handleSelectOdds = (event, runnerName, outcomeType, betType, odds) => {
     if (!odds || odds <= 1) return;
+    if (!isLoggedIn) {
+      setAuthView('login');
+      showToast('Please login to place bets', 'info');
+      return;
+    }
 
     if (quickBetActive) {
       handleQuickBet(event, runnerName, betType, odds, 1000);
@@ -427,17 +474,19 @@ export default function App() {
 
       {/* Master Header */}
       <Header 
+        isLoggedIn={isLoggedIn}
+        displayName={user.displayName}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         mainBalance={user.mainBalance}
-        exposure={user.exposure}
         soundEnabled={user.soundEnabled}
         onToggleSound={() => setUser(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
-        onOpenAccount={() => setShowAccountDrawer(true)}
+        onOpenAccount={() => requireAuth(() => setShowAccountDrawer(true))}
         onToggleMobileMenu={() => setShowMobileSidebar(prev => !prev)}
-        onOpenDeposit={() => setDepositModalOpen(true)}
-        onOpenWithdraw={handleOpenWithdraw}
-        onOpenTheme={() => setThemeModalOpen(true)}
+        onOpenDeposit={() => requireAuth(() => setDepositModalOpen(true))}
+        onOpenWithdraw={() => requireAuth(handleOpenWithdraw)}
+        onOpenLogin={() => setAuthView('login')}
+        onOpenRegister={() => setAuthView('register')}
       />
 
       {/* Category Nav Ribbon */}
@@ -500,11 +549,18 @@ export default function App() {
               {/* Classic home: providers + featured games */}
               {activeSport === 'all' && (
                 <section className="classic-home-top">
-                  <div className="provider-scroll-grid">
-                    {['Evolution', 'Ezugi', 'SexyBcrt', 'Turbo', 'Jili', 'Smartsoft', 'Spribe', 'MAC88'].map(p => (
-                      <button key={p} className="provider-tile" onClick={() => setActiveSport('casino')}>
-                        <span className="pt-logo">{p.slice(0, 2).toUpperCase()}</span>
-                        <span className="pt-name">{p}</span>
+                  <div className="provider-banner-grid">
+                    {PROVIDER_BANNERS.map(p => (
+                      <button
+                        key={p.id}
+                        type="button"
+                        className="provider-banner"
+                        style={{
+                          backgroundImage: `linear-gradient(90deg, ${p.accent} 0%, ${p.accent}f0 36%, transparent 70%), url(${p.image})`
+                        }}
+                        onClick={() => setActiveSport('casino')}
+                      >
+                        <span className="pb-name">{p.name}</span>
                       </button>
                     ))}
                   </div>
@@ -516,13 +572,14 @@ export default function App() {
                   </div>
 
                   <div className="featured-games-row">
-                    {[
-                      { title: 'AVIATORX', grad: 'aviator-grad', icon: 'fa-plane' },
-                      { title: '24*7 LIVE PREDICTION', grad: 'predict-grad', icon: 'fa-coins' },
-                      { title: 'MINES', grad: 'mines-grad', icon: 'fa-bomb' }
-                    ].map(g => (
-                      <div key={g.title} className={`featured-game-card ${g.grad}`} onClick={() => setGameModal({ isOpen: true, game: { title: g.title, provider: 'Rollix' } })}>
-                        <i className={`fa-solid ${g.icon} fgc-icon`}></i>
+                    {FEATURED_GAMES.map(g => (
+                      <div
+                        key={g.id}
+                        className="featured-game-card has-image"
+                        style={{ backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.75) 100%), url(${g.image})` }}
+                        onClick={() => setGameModal({ isOpen: true, game: { title: g.title, provider: g.provider } })}
+                      >
+                        <img className="fgc-img" src={g.image} alt={g.title} loading="lazy" />
                         <span className="fgc-title">{g.title}</span>
                       </div>
                     ))}
@@ -533,14 +590,18 @@ export default function App() {
                       <i className="fa-solid fa-gem"></i> FANTASY & FUN
                     </div>
                     <div className="ffs-banners">
-                      <button className="ffs-banner fantasy" onClick={() => setActiveCategory('fantasy11')}>
-                        <span>FANTASY11</span>
-                        <small>Play & Win Daily</small>
-                      </button>
-                      <button className="ffs-banner randora" onClick={() => setActiveCategory('randora')}>
-                        <span>RANDORA</span>
-                        <small>Pot of Gold</small>
-                      </button>
+                      {FANTASY_BANNERS.map(b => (
+                        <button
+                          key={b.id}
+                          type="button"
+                          className="ffs-banner has-image"
+                          style={{ backgroundImage: `linear-gradient(120deg, rgba(0,0,0,0.55), rgba(0,0,0,0.15)), url(${b.image})` }}
+                          onClick={() => setActiveSport('casino')}
+                        >
+                          <span>{b.title}</span>
+                          <small>{b.subtitle}</small>
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </section>
@@ -671,6 +732,7 @@ export default function App() {
       <AccountDrawer 
         isOpen={showAccountDrawer}
         onClose={() => setShowAccountDrawer(false)}
+        displayName={user.displayName}
         mainBalance={user.mainBalance}
         exposure={user.exposure}
         bonus={user.bonus}
@@ -686,17 +748,13 @@ export default function App() {
           setShowAccountDrawer(false);
           setAccountModal({ isOpen: true, page: 'open-bets' });
         }}
-        onOpenTheme={() => {
-          setShowAccountDrawer(false);
-          setThemeModalOpen(true);
-        }}
         onSelectPage={(page) => {
           setShowAccountDrawer(false);
           setAccountModal({ isOpen: true, page });
         }}
+        onLogout={handleLogout}
       />
 
-      {/* Account Management & Statements Center (All 10 Pages) */}
       <AccountPages 
         isOpen={accountModal.isOpen}
         initialPage={accountModal.page}
@@ -713,33 +771,39 @@ export default function App() {
         }}
       />
 
-      {/* Color Theme Switcher Modal */}
-      <ThemeSwitcher 
-        currentTheme={theme}
-        onSelectTheme={(newTheme) => {
-          setTheme(newTheme);
-          setThemeModalOpen(false);
-          showToast(`Theme updated to ${newTheme.toUpperCase()}`, 'success');
+      <LoginModal
+        isOpen={authView === 'login'}
+        onClose={() => {
+          localStorage.setItem('rollix_auth_dismissed', '1');
+          setAuthView(null);
         }}
-        isOpen={themeModalOpen}
-        onClose={() => setThemeModalOpen(false)}
+        onSwitchRegister={() => setAuthView('register')}
+        onLoginSuccess={applyLoggedInUser}
+        onToast={showToast}
+      />
+      <RegisterModal
+        isOpen={authView === 'register'}
+        onClose={() => {
+          localStorage.setItem('rollix_auth_dismissed', '1');
+          setAuthView(null);
+        }}
+        onSwitchLogin={() => setAuthView('login')}
+        onRegisterSuccess={applyLoggedInUser}
+        onToast={showToast}
       />
 
-      {/* Deposit Modal */}
       <DepositModal 
         isOpen={depositModalOpen}
         onClose={() => setDepositModalOpen(false)}
         onSubmitDeposit={handleSubmitDeposit}
       />
 
-      {/* Game Modal */}
       <GameModal 
         isOpen={gameModal.isOpen}
         onClose={() => setGameModal({ isOpen: false, game: null })}
         game={gameModal.game}
       />
 
-      {/* Mobile Bottom Navigation Bar */}
       <MobileBottomNav 
         activeTab={activeSport}
         onSelectTab={(tab) => {
@@ -747,15 +811,8 @@ export default function App() {
           setSelectedMatch(null);
         }}
         slipCount={selections.length}
-        onOpenMobileSlip={() => setShowMobileSlip(true)}
-        onOpenAccount={() => setShowAccountDrawer(true)}
-      />
-
-      {/* Floating Theme Quick Switcher */}
-      <ThemeFloatingToggle 
-        currentTheme={theme}
-        onOpenModal={() => setThemeModalOpen(true)}
-        onNextTheme={handleCycleTheme}
+        onOpenMobileSlip={() => requireAuth(() => setShowMobileSlip(true))}
+        onOpenAccount={() => requireAuth(() => setShowAccountDrawer(true))}
       />
 
       {/* Classic FABs */}
